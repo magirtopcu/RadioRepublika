@@ -1,11 +1,18 @@
-<resources>
+<resources xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="AppTheme.Base"/>
+
+    <style name="AppTheme.Base" parent="Theme.AppCompat.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/playerToolbarBackground</item>
+        <item name="colorPrimaryDark">@color/playerToolbarBackground</item>
         <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="PlayerToolbar" parent="Base.Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">@color/playerToolbarBackground</item>
     </style>
 
 </resources>
