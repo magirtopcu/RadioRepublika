@@ -13,15 +13,14 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.alchemik.radiorepublika.util.ConnectionUtil;
 import com.devbrackets.android.exomedia.EMAudioPlayer;
 
-import static android.telephony.TelephonyManager.*;
+import static android.telephony.TelephonyManager.CALL_STATE_IDLE;
+import static android.telephony.TelephonyManager.CALL_STATE_RINGING;
 
 
 public class MainActivity extends AppCompatActivity implements CustomWebViewClient.OnUrlOutOfScopeClickedListener{
@@ -36,9 +35,7 @@ public class MainActivity extends AppCompatActivity implements CustomWebViewClie
     private ImageButton playerCloseBtn;
     private ImageButton playerMuteBtn;
     private ImageButton playerPlayPauseBtn;
-    private ImageButton webViewSyncBtn;
     private EMAudioPlayer mEMAudioPlayer;
-    private WebView mWebView;
 
     private boolean shouldBePlaying = false;
 
@@ -52,43 +49,14 @@ public class MainActivity extends AppCompatActivity implements CustomWebViewClie
         getSupportActionBar().setLogo(R.mipmap.ic_launcher);
         getSupportActionBar().setDisplayUseLogoEnabled(true);*/
 
-
-        mWebView = (WebView) findViewById(R.id.news_webview);
         playerPlayPauseBtn = (ImageButton) findViewById(R.id.player_play_pause);
         playerCloseBtn = (ImageButton) findViewById(R.id.player_close);
         playerMuteBtn = (ImageButton) findViewById(R.id.player_mute);
-        webViewSyncBtn = (ImageButton) findViewById(R.id.webview_sync_button);
 
         telephonyManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
 
         setupPlayer();
         setListeners();
-
-
-        if (ConnectionUtil.isConnectedToNetwork(getApplicationContext())) {
-            loadWebView();
-        } else {
-            mWebView.setBackgroundColor(0x00000000); //Color to transparent
-            webViewSyncBtn.setVisibility(View.VISIBLE);
-        }
-
-    }
-
-    private void loadWebView() {
-        mWebView.setWebViewClient(new CustomWebViewClient(this));
-        WebSettings webSettings = mWebView.getSettings();
-        webSettings.setJavaScriptEnabled(true);
-        mWebView.loadUrl(REPUBLIKA_URL);
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (mWebView.canGoBack()) {
-            mWebView.goBack();
-            return;
-        } else { finish();}
-
-        super.onBackPressed();
     }
 
     @Override
@@ -126,15 +94,6 @@ public class MainActivity extends AppCompatActivity implements CustomWebViewClie
             }
         });
 
-        webViewSyncBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (ConnectionUtil.isConnectedToNetwork(getApplicationContext())) {
-                    webViewSyncBtn.setVisibility(View.GONE);
-                    loadWebView();
-                }
-            }
-        });
 
         PhoneStateListener stateListener = new PhoneStateListener() {
             @Override
@@ -179,8 +138,8 @@ public class MainActivity extends AppCompatActivity implements CustomWebViewClie
         playerPlayPauseBtn.setImageResource(R.drawable.ic_pause_48dp);
         shouldBePlaying = true;
     }
-    private void setupPlayer() {
 
+    private void setupPlayer() {
         //TODO: show spinner during loading EMAudioPlayer
 
         mEMAudioPlayer = AudioPlayer.getPlayer(this);
@@ -204,7 +163,6 @@ public class MainActivity extends AppCompatActivity implements CustomWebViewClie
 
                 playerPlayPauseBtn.setClickable(true);
                 playerPlayPauseBtn.setImageResource(R.drawable.ic_play_arrow_48dp);
-                Toast.makeText(getApplicationContext(), "Radio Republika is ready!", Toast.LENGTH_SHORT).show();
                 startPlayer();
             }
         });

@@ -14,14 +14,15 @@
             tools:text="8:10"/>
         <TextView
             android:id="@+id/news_title_tv"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:maxLines="2"
             android:layout_marginLeft="5dp"
             android:textAppearance="?attr/textAppearanceListItem"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:textStyle="bold"
             android:fontFamily="fonts/Oswald.ttf"
-            tools:text="Kulisy Manipulacji - Flesz"/>
+            tools:text="Kulisy Manipulacji - Flesz wqweqweasdqwe"/>
     </TableRow>
     <TableRow android:layout_margin="2dp">
         <TextView
@@ -30,6 +31,7 @@
             android:layout_height="match_parent"
             android:textAppearance="?attr/textAppearanceListItem"
             android:textSize="13sp"
+            android:background="@color/program_live_transparent"
             android:ellipsize="marquee"
             android:gravity="center"
             tools:text="Premiera"/>

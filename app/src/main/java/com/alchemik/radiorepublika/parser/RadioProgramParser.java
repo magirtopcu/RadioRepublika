@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class RadioProgramParser {
 
@@ -48,9 +49,9 @@ public class RadioProgramParser {
                                 // parse to milis
 
                                 Date date = new Date();
-                                String timeInMillisSinceBeginning = new SimpleDateFormat("yyyy:MM:dd").format(date);
+                                String timeInMillisSinceBeginning = new SimpleDateFormat("yyyy:MM:dd", new Locale("pl", "PL")).format(date);
                                 //FIXME
-                                Date timeInMillis = new SimpleDateFormat("yyyy:MM:dd HH:mm").parse(timeInMillisSinceBeginning + " " + elemString);
+                                Date timeInMillis = new SimpleDateFormat("yyyy:MM:dd HH:mm", new Locale("pl", "PL")).parse(timeInMillisSinceBeginning + " " + elemString);
                                 track.setStartDateTime(timeInMillis.getTime());
                                 Log.d(TAG, "timeInMillisSinceBeginning=" + timeInMillisSinceBeginning + ", time in millis = " + timeInMillis);
                                 // set start time

@@ -1,9 +1,8 @@
 package com.alchemik.radiorepublika.program;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Typeface;
-import android.support.annotation.ColorRes;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
@@ -13,15 +12,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.alchemik.radiorepublika.R;
-import com.alchemik.radiorepublika.dummy.DummyContent.DummyItem;
 import com.alchemik.radiorepublika.model.Track;
-
-import org.jsoup.helper.StringUtil;
 
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
+ * {@link RecyclerView.Adapter} that can display a {@link Track} and makes a call to the
  * specified {@link TrackListFragment.OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
@@ -65,31 +61,29 @@ public class MyTrackRecyclerViewAdapter extends RecyclerView.Adapter<MyTrackRecy
         Log.d(TAG, "onBindViewHolder: currentTime=" + currentTime + ", currentItemStartTime=" + currentItemStartTime + ", nextItemStartTime=" + nextItemStartTime);
 
         String type = "";
-        String backgroundColor = "#00000000";
-        String textColor = "#FFFFFF";
+        int backgroundColor = R.color.schedule_background_neutral;
+        int textColor = android.R.color.white;
         if (isPremier) {
             type = "PREMIERA";
-            backgroundColor = "#ce0606";
+            backgroundColor = R.color.schedule_background_premier;
         } else if (isLive) {
             type = "NA ŻYWO";
-            backgroundColor = "#ff99cc00";
+            backgroundColor = R.color.schedule_background_live_darker;
         }
         int visible = View.VISIBLE;
         if (!isLive && !isPremier && !hasSubtitle) {
             visible = View.GONE;
         }
         if (currentItemStartTime < currentTime && currentTime < currentItemEndTime) {
-            Log.d(TAG, "onBindViewHolder: BINGO!!!!!");
-            textColor = "#ff99cc00";
+            textColor = R.color.font_green;
         }
 
-        holder.mTypeView.setBackgroundColor(Color.parseColor(backgroundColor));
+        holder.mTypeView.setBackgroundColor(ContextCompat.getColor(mContext, backgroundColor));
         holder.mStartTimeView.setText(holder.mItem.getStartTime());
         holder.mTitleView.setText(holder.mItem.getTrackTitle());
-        holder.mTitleView.setTextColor(Color.parseColor(textColor));
+        holder.mTitleView.setTextColor(ContextCompat.getColor(mContext, textColor));
         holder.mTypeView.setText(type);
         holder.mSubtitleView.setText(subtitle);
-
         holder.mTypeView.setVisibility(visible);
         holder.mSubtitleView.setVisibility(visible);
 
@@ -99,7 +93,7 @@ public class MyTrackRecyclerViewAdapter extends RecyclerView.Adapter<MyTrackRecy
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
+                    //mListener.showMessage(holder.mItem);
                 }
             }
         });

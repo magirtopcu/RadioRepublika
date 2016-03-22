@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 
 
 /**
- * Created by leszek on 2016-02-08.
+ * Created by Leszek Jasek on 2016-02-08.
  */
 public abstract class SingleFragmentActivity extends AppCompatActivity {
 

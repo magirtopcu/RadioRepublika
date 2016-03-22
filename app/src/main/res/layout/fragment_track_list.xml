@@ -1,14 +1,160 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.RecyclerView
-    android:id="@+id/list"
-    android:name="com.alchemik.radiorepublika.TrackListFragment"
+<android.support.design.widget.CoordinatorLayout
+    android:id="@+id/activity_coordinator_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
-    app:layoutManager="LinearLayoutManager"
-    tools:context=".program.TrackListFragment"
-    tools:listitem="@layout/fragment_track"/>
+    android:orientation="vertical">
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        tools:context="com.alchemik.radiorepublika.MainActivity">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.88">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:name="com.alchemik.radiorepublika.TrackListFragment"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                app:layoutManager="LinearLayoutManager"
+                tools:context=".program.TrackListFragment"
+                tools:listitem="@layout/fragment_track"/>
+
+            <ImageButton
+                android:id="@+id/schedule_sync_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center_horizontal"
+                android:background="@null"
+                android:src="@drawable/ic_sync_problem_48dp"
+                android:tint="#ffffff"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/player_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:paddingLeft="8dp"
+            android:layout_gravity="bottom"
+            android:theme="@style/PlayerToolbar">
+
+            <ImageView
+                android:id="@+id/player_icon"
+                android:layout_width="38dp"
+                android:layout_height="30dp"
+                android:layout_gravity="start"
+                android:src="@drawable/republika_icon"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/player_mute"
+                android:layout_toEndOf="@+id/player_mute"/>
+
+            <TextView
+                android:id="@+id/player_start_time"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/player_icon"
+                android:layout_centerVertical="true"
+                android:layout_gravity="start"
+                android:gravity="center_horizontal"
+                tools:text="12:40"/>
+
+            <LinearLayout
+                android:id="@+id/ll_player_title_subtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@id/player_start_time"
+                android:layout_toLeftOf="@+id/player_mute"
+                android:layout_toRightOf="@id/player_start_time"
+                android:layout_toStartOf="@+id/player_mute"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/player_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="marquee"
+                    android:gravity="bottom"
+                    android:scrollHorizontally="true"
+                    android:singleLine="true"
+                    android:textStyle="bold"
+                    tools:text="Starcie cywilizacji - II wojna światowa oczami gen. Jaruzelskiego"
+                    />
+
+                <TextView
+                    android:id="@+id/player_subtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:ellipsize="marquee"
+                    android:gravity="start"
+                    android:scrollHorizontally="true"
+                    android:singleLine="true"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="12sp"
+                    tools:text="Magazyn Tomasza Terlikowskiego"/>
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/player_mute"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/player_play_pause"
+                android:layout_toStartOf="@+id/player_play_pause"
+                android:background="@null"
+                android:padding="2dp"
+                android:scaleType="center"
+                android:src="@drawable/ic_volume_up_24dp"
+                android:tint="#ffffff"
+                android:visibility="gone"/>
+
+            <ImageButton
+                android:id="@+id/player_close"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/player_play_pause"
+                android:layout_toStartOf="@+id/player_play_pause"
+                android:background="@null"
+                android:padding="2dp"
+                android:scaleType="center"
+                android:src="@drawable/ic_close_48dp"
+                android:tint="#ffffff"
+                android:visibility="gone"/>
+
+            <ImageButton
+                android:id="@+id/player_play_pause"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@null"
+                android:padding="6dp"
+                android:src="@drawable/ic_play_arrow_48dp"
+                android:tint="#ffffff"
+                />
+        </RelativeLayout>
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

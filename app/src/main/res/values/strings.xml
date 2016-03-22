@@ -3,4 +3,7 @@
     <string name="snackbar_no_internet_connection">Brak połączenia z Internetem</string>
     <string name="webview_url_out_of_scope">Próbujesz wyjść poza stronę telewizjarepublika.pl</string>
     <string name="webview_error">Wystąpił błąd, spróbuj ponownie</string>
+    <string name="player_connecting_message">Nawiązuję połączenie z TV Republika…</string>
+    <string name="player_download_schedule_message">Pobieram program…</string>
+    <string name="connection_error_message">Nie udało się nawiązać połączenia</string>
 </resources>

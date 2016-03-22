@@ -1,8 +1,6 @@
 package com.alchemik.radiorepublika;
 
 import android.support.annotation.StringRes;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -10,7 +8,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 /**
- * Created by lesze on 3/19/2016.
+ * Created by Leszek Jasek on 3/19/2016.
  */
 public class CustomWebViewClient extends WebViewClient {
     private static final String TAG = CustomWebViewClient.class.getSimpleName();

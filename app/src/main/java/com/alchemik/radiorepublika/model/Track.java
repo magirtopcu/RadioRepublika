@@ -1,9 +1,8 @@
 package com.alchemik.radiorepublika.model;
 
-import java.util.Date;
 
 /**
- * Created by lesze on 3/19/2016.
+ * Created by Leszek Jasek on 3/19/2016.
  */
 public class Track {
     private String mTrackTitle;

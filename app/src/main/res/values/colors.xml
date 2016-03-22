@@ -5,6 +5,16 @@
     <color name="colorAccent">@android:color/holo_green_light</color>
     <color name="playerToolbarBackground">#232222</color>
     <color name="background">#ffffff</color>
-    <color name="program_live">#ff99cc00</color>
+    <color name="program_live">#c799cc00</color>
+    <color name="program_live_transparent">#c799cc00</color>
     <color name="program_premier">#ce0606</color>
+
+    <!-- schedule item colors -->
+    <color name="schedule_background_neutral">#00000000</color>
+    <color name="schedule_background_premier">#ce0606</color>
+    <color name="schedule_background_live">#ff99cc00</color>
+    <color name="schedule_background_live_darker">#7ca600</color>
+
+    <!-- Font colors -->
+    <color name="font_green">#ff99cc00</color>
 </resources>
