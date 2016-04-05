@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical"
-        tools:context="com.alchemik.radiorepublika.MainActivity">
+        tools:context=".webview.MainActivity">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -42,21 +42,6 @@
             android:layout_height="60dp"
             android:layout_gravity="bottom"
             android:theme="@style/PlayerToolbar">
-            <!--        <ImageView
-                        android:id="@+id/player_icon"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:padding="2dp"
-                        android:src="@drawable/republika_icon"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:layout_gravity="start"
-                        android:layout_centerVertical="true"/>-->
-
-            <!--            android:layout_toRightOf="@id/player_icon"
-                 android:layout_toEndOf="@+id/player_icon"
-                 android:layout_toLeftOf="@+id/player_close"
-                 android:layout_toStartOf="@+id/player_close"-->
             <LinearLayout
                 android:id="@+id/ll_player_title_subtitle"
                 android:layout_width="match_parent"
@@ -65,8 +50,9 @@
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
-                android:layout_toLeftOf="@+id/player_mute"
-                android:layout_toStartOf="@+id/player_mute"
+                android:layout_marginStart="10dp"
+                android:layout_toLeftOf="@+id/player_play_pause"
+                android:layout_toStartOf="@+id/player_play_pause"
                 android:gravity="center_vertical"
                 android:orientation="vertical">
 
@@ -78,7 +64,6 @@
                     android:gravity="bottom"
                     android:scrollHorizontally="true"
                     android:singleLine="true"
-                    android:text="Starcie cywilizacji - II wojna światowa oczami gen. Jaruzelskiego"
                     android:textStyle="bold"
                     tools:text="Starcie cywilizacji - II wojna światowa oczami gen. Jaruzelskiego"
                     />
@@ -86,30 +71,16 @@
                 <TextView
                     android:id="@+id/player_subtitle"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
                     android:layout_weight="0.5"
                     android:ellipsize="marquee"
                     android:gravity="start"
                     android:scrollHorizontally="true"
                     android:singleLine="true"
-                    android:text="Magazyn Tomasza Terlikowskiego"
                     android:textSize="12sp"
                     tools:text="Magazyn Tomasza Terlikowskiego"/>
             </LinearLayout>
 
-            <ImageButton
-                android:id="@+id/player_mute"
-                android:layout_width="26dp"
-                android:layout_height="26dp"
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/player_play_pause"
-                android:layout_toStartOf="@+id/player_play_pause"
-                android:background="@null"
-                android:padding="2dp"
-                android:scaleType="center"
-                android:src="@drawable/ic_volume_up_24dp"
-                android:tint="#ffffff"
-                android:visibility="gone"/>
 
             <ImageButton
                 android:id="@+id/player_close"
@@ -133,9 +104,10 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
                 android:background="@null"
                 android:padding="6dp"
-                android:src="@drawable/play_ico"
+                android:src="@drawable/ic_play_arrow_48dp"
                 android:tint="#ffffff"/>
         </RelativeLayout>
     </LinearLayout>

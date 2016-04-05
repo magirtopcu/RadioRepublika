@@ -1,4 +1,4 @@
-package com.alchemik.radiorepublika;
+package com.alchemik.radiorepublika.webview;
 
 import android.support.annotation.StringRes;
 import android.util.Log;
@@ -6,6 +6,8 @@ import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import com.alchemik.radiorepublika.R;
 
 /**
  * Created by Leszek Jasek on 3/19/2016.

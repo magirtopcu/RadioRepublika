@@ -21,13 +21,6 @@ public class Track {
         mTrackSubtitle = "";
     }
 
-    public Track(String trackTitle, String startTime, String picUrl) {
-        this();
-        mTrackTitle = trackTitle;
-        mStartTime = startTime;
-        mPicUrl = picUrl;
-    }
-
     public Track(String trackTitle, String startTime, long startDateTime, long endDateTime) {
         this();
         mTrackTitle = trackTitle;

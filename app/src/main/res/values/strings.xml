@@ -1,9 +1,20 @@
 <resources>
-    <string name="app_name">RadioRepublika</string>
+    <string name="app_name">Radio Republika</string>
     <string name="snackbar_no_internet_connection">Brak połączenia z Internetem</string>
     <string name="webview_url_out_of_scope">Próbujesz wyjść poza stronę telewizjarepublika.pl</string>
     <string name="webview_error">Wystąpił błąd, spróbuj ponownie</string>
     <string name="player_connecting_message">Nawiązuję połączenie z TV Republika…</string>
     <string name="player_download_schedule_message">Pobieram program…</string>
     <string name="connection_error_message">Nie udało się nawiązać połączenia</string>
+    <string name="menu_info_item">Info</string>
+
+    <!-- Preferences -->
+    <string name="pref_category_title_privacy">Prywatność</string>
+    <string name="pref_title_analytics">Wysyłaj raporty o błędach</string>
+    <string name="pref_summary_analytics">Pozwalaj aplikacji wysyłać raporty o błędach</string>
+    <string name="pref_category_title_about">O aplikacji</string>
+    <string name="pref_title_about_app">O aplikacji Radio Republika</string>
+    <string name="pref_title_rate_app">Oceń aplikację</string>
+    <string name="pref_title_send_feedback">Wyślij opinię</string>
+    <string name="pref_feedback_subject">[Radio Republika] Opinia</string>
 </resources>

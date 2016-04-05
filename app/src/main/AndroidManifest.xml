@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <!-- Allows using PowerManager WakeLocks to keep processor from sleeping or screen from dimming. -->
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
     <application
         android:allowBackup="true"
@@ -14,14 +14,37 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.alchemik.radiorepublika.program.TrackListActivity">
+        <activity
+            android:name=".program.TrackListActivity"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity
+            android:name=".settings.SettingsActivity"
+            android:parentActivityName=".program.TrackListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".program.TrackListActivity"/>
+        </activity>
+        <activity
+            android:name=".webview.WebViewActivity"
+            android:parentActivityName=".settings.SettingsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".program.TrackListActivity"/>
+        </activity>
         <service android:name=".service.RadioService"/>
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="76e82d3a9145c74deed2cb213ee829f9ae71c273"/>
+
+        <activity android:name=".about.AboutActivity">
+        </activity>
     </application>
 
 </manifest>

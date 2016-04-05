@@ -34,15 +34,18 @@ import android.widget.Toast;
 import com.alchemik.radiorepublika.AudioPlayer;
 import com.alchemik.radiorepublika.R;
 import com.alchemik.radiorepublika.model.Track;
-import com.alchemik.radiorepublika.parser.RadioProgramParser;
+import com.alchemik.radiorepublika.parser.ScheduleParser;
 import com.alchemik.radiorepublika.service.RadioService;
 import com.alchemik.radiorepublika.util.ConnectionUtil;
+import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.core.CrashlyticsCore;
 import com.devbrackets.android.exomedia.EMAudioPlayer;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
+import org.jsoup.helper.StringUtil;
 
 import java.io.IOException;
 import java.text.NumberFormat;
@@ -51,6 +54,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import io.fabric.sdk.android.Fabric;
 
 import static android.telephony.TelephonyManager.CALL_STATE_IDLE;
 import static android.telephony.TelephonyManager.CALL_STATE_RINGING;
@@ -74,8 +79,8 @@ public class TrackListFragment extends Fragment {
     private TextView playerTitleTV;
     private TextView playerSubtitleTV;
     private TextView playerTimeTV;
+    private TextView playerEndTimeTV;
     private ImageButton playerCloseBtn;
-    private ImageButton playerMuteBtn;
     private ImageButton playerPlayPauseBtn;
     private ImageButton scheduleSyncBtn;
 
@@ -97,8 +102,6 @@ public class TrackListFragment extends Fragment {
 
     private Handler handler;
     private Runnable updateTask;
-
-    long nextUpdate = 1000;
 
     private RadioService mRadioService;
     private Intent playRadioIntent;
@@ -123,7 +126,7 @@ public class TrackListFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        Log.i(LIFECYCLE, "onAttach() called");
+        Log.i(TAG, "LIFECYCLE onAttach() called");
 
         if (context instanceof OnListFragmentInteractionListener) {
             mListener = (OnListFragmentInteractionListener) context;
@@ -137,45 +140,41 @@ public class TrackListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(LIFECYCLE, "onCreate() called");
+        Log.i(TAG, "LIFECYCLE onCreate() called");
 
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
-
-        //if (ConnectionUtil.isConnectedToNetwork(getActivity())) {
-        //    new AsyncScheduleParserTask().execute();
-        //} else {
-        //
-        //}
-
     }
 
-    ServiceConnection serviceConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            Log.d(TAG, "onServiceConnected() ");
-            RadioService.RadioBinder binder = (RadioService.RadioBinder)service;
-            //get service
-            mRadioService = binder.getService();
-            //pass list
-            //mRadioService.setList(songList);
-            radioBound = true;
 
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            Log.d(TAG, "onServiceDisconnected() ");
-            radioBound = false;
-        }
-    };
+    //ServiceConnection serviceConnection = new ServiceConnection() {
+    //    @Override
+    //    public void onServiceConnected(ComponentName name, IBinder service) {
+    //        Log.d(TAG, "onServiceConnected() ");
+    //        RadioService.RadioBinder binder = (RadioService.RadioBinder)service;
+    //        //get service
+    //        mRadioService = binder.getService();
+    //        //pass list
+    //        //mRadioService.setList(songList);
+    //        radioBound = true;
+    //
+    //    }
+    //
+    //    @Override
+    //    public void onServiceDisconnected(ComponentName name) {
+    //        Log.d(TAG, "onServiceDisconnected() ");
+    //        radioBound = false;
+    //    }
+    //};
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
-        Log.i(LIFECYCLE, "onCreateView() called");
+        Log.i(TAG, "LIFECYCLE onCreateView() called");
         View view = inflater.inflate(R.layout.fragment_track_list, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+
+
         // Set the adapter
         //if (view instanceof RecyclerView) {
         //}
@@ -189,11 +188,11 @@ public class TrackListFragment extends Fragment {
 
         playerPlayPauseBtn = (ImageButton) view.findViewById(R.id.player_play_pause);
         playerCloseBtn = (ImageButton) view.findViewById(R.id.player_close);
-        playerMuteBtn = (ImageButton) view.findViewById(R.id.player_mute);
         scheduleSyncBtn = (ImageButton) view.findViewById(R.id.schedule_sync_button);
         playerTitleTV = (TextView) view.findViewById(R.id.player_title);
         playerSubtitleTV = (TextView) view.findViewById(R.id.player_subtitle);
         playerTimeTV = (TextView) view.findViewById(R.id.player_start_time);
+        playerEndTimeTV = (TextView) view.findViewById(R.id.player_end_time);
         telephonyManager = (TelephonyManager) getActivity().getSystemService(Context.TELEPHONY_SERVICE);
         connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -202,13 +201,14 @@ public class TrackListFragment extends Fragment {
         playerSubtitleTV.setTypeface(font);
 
         setButtonListeners();
+        tryToConnect();
         return view;
     }
 
     private void tryToConnect() {
-        final Handler handler = new Handler();
+        final Handler connectionHandler = new Handler();
         final int MAX_ATTEMPT = 3;
-        handler.post(new Runnable() {
+        connectionHandler.post(new Runnable() {
             int attempt = 0;
 
             @Override
@@ -216,7 +216,7 @@ public class TrackListFragment extends Fragment {
                 Log.d(TAG, "run: attempt=" + attempt);
                 ++attempt;
                 if (!ConnectionUtil.isConnectedToNetwork(getActivity()) && attempt <= MAX_ATTEMPT) {
-                    handler.postDelayed(this, 2000);
+                    connectionHandler.postDelayed(this, 2000);
                 } else if (ConnectionUtil.isConnectedToNetwork(getActivity())){
                         scheduleSyncBtn.clearAnimation();
                         scheduleSyncBtn.setVisibility(View.INVISIBLE);
@@ -260,28 +260,27 @@ public class TrackListFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        tryToConnect();
-        Log.i(LIFECYCLE, "onStart() called");
+        Log.i(TAG, "LIFECYCLE onStart() called");
 
-        if (playRadioIntent == null) {
-            Log.d(TAG, "inside playRadioIntent == null clause");
-            playRadioIntent = new Intent(getActivity(), RadioService.class);
-            getActivity().bindService(playRadioIntent, serviceConnection, Context.BIND_AUTO_CREATE);
-            getActivity().startService(playRadioIntent);
-        }
+        //if (playRadioIntent == null) {
+        //    Log.d(TAG, "inside playRadioIntent == null clause");
+        //    playRadioIntent = new Intent(getActivity(), RadioService.class);
+        //    getActivity().bindService(playRadioIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+        //    getActivity().startService(playRadioIntent);
+        //}
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(LIFECYCLE, "onResume() called");
+        Log.i(TAG, "LIFECYCLE onResume() called");
     }
 
     private void setupTimer() {
         Log.d("TIMER", "setupTimer() ");
 
-        handler = new Handler();
-        updateTask = new Runnable() {
+        final Handler handler = new Handler();
+        Runnable updateTask = new Runnable() {
             @Override
             public void run() {
                 updateUI();
@@ -298,11 +297,19 @@ public class TrackListFragment extends Fragment {
     }
 
     private void updateCurrentPlaying() {
-        for (Track track : mTrackList) {
+        for (int i = 0; i < mTrackList.size() ; i++) {
+            Track track = mTrackList.get(i);
             if (track.isCurrentlyPlaying()) {
                 playerTimeTV.setText(track.getStartTime());
                 playerTitleTV.setText(track.getTrackTitle());
-                playerSubtitleTV.setText(track.getTrackSubtitle());
+                if (StringUtil.isBlank(track.getTrackSubtitle())) {
+                    playerSubtitleTV.setVisibility(View.GONE);
+                } else {
+                    playerSubtitleTV.setText(track.getTrackSubtitle());
+                }
+                if (i < mTrackList.size() - 1) {
+                    playerEndTimeTV.setText(mTrackList.get(i + 1).getStartTime());
+                }
             }
         }
     }
@@ -312,12 +319,9 @@ public class TrackListFragment extends Fragment {
      */
     private long scheduleNextUpdate() {
         for (Track track : mTrackList) {
-            Log.d("TIMER", "scheduleNextUpdate: track=" + track.getTrackTitle());
             if (track.isCurrentlyPlaying()) {
                 long nextUpdateInMillis = track.getEndDateTime() - System.currentTimeMillis();
-                Log.d("TIMER", "scheduleNextUpdate on " + nextUpdateInMillis);
-                Log.d("TIMER", "scheduleNextUpdate on " + new SimpleDateFormat("kk:mm:ss:SSS", Locale.getDefault()).format(nextUpdateInMillis));
-                Log.d("TIMER", "scheduleNextUpdate on " + convertMillisToHMS(nextUpdateInMillis));
+                Log.i("TIMER", "Currently playing: " + track.getTrackTitle() + ", schedule next update on " + new SimpleDateFormat("kk:mm:ss:SSS", Locale.getDefault()).format(nextUpdateInMillis));
                 return nextUpdateInMillis;
             }
         }
@@ -327,31 +331,30 @@ public class TrackListFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        Log.i(LIFECYCLE, "onDetach() called");
+        Log.i(TAG, "LIFECYCLE onDetach() called");
         mListener = null;
     }
 
     @Override
     public void onDestroy() {
-        Log.i(LIFECYCLE, "onDestroy() called");
+        Log.i(TAG, "LIFECYCLE onDestroy() called mEMAudioPlayer=" + mEMAudioPlayer);
         //getActivity().stopService(playRadioIntent);
-        getActivity().unbindService(serviceConnection);
-        mRadioService = null;
+        if (mEMAudioPlayer != null) {
+            stopPlayer();
+            mEMAudioPlayer.release();
+            mEMAudioPlayer = null;
+        }
+
+        //getActivity().unbindService(serviceConnection);
+        //mRadioService = null;
 
         //timer.cancel();
-        if (handler != null) {
-            handler.removeCallbacks(updateTask);
-        }
+        //if (handler != null) {
+        //    handler.removeCallbacks(updateTask);
+        //}
         super.onDestroy();
     }
 
-    public static String convertMillisToHMS(long millis) {
-        DateTimeZone timeZone = DateTimeZone.forID("CET");
-        DateTime dateTime = new DateTime( millis, timeZone );
-        DateTimeFormatter formatter = ISODateTimeFormat.hourMinuteSecond();
-        return formatter.print(dateTime);
-    }
-    
     private class AsyncScheduleParserTask extends AsyncTask<Void, Void , List<Track>> {
 
         ProgressDialog scheduleProgressDialog;
@@ -367,7 +370,7 @@ public class TrackListFragment extends Fragment {
             Log.d("AsyncScheduleParserTask", "doInBackground: ");
             List<Track> trackList = new ArrayList<>();
             try {
-                trackList.addAll(RadioProgramParser.parse());
+                trackList.addAll(ScheduleParser.parse());
             } catch (ParseException | IOException e) {
                 e.printStackTrace();
             }
@@ -410,16 +413,12 @@ public class TrackListFragment extends Fragment {
         playerCloseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                onDestroy();
                 getActivity().finish();
                 System.exit(0);
             }
         });
 
-        playerMuteBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
 
         scheduleSyncBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -469,10 +468,11 @@ public class TrackListFragment extends Fragment {
     }
 
     public void stopPlayer() {
-        mEMAudioPlayer.stopProgressPoll();
-        mEMAudioPlayer.reset();
-        Log.i(TAG, "stopPlayer(): EMAudioPlayer was stopped");
-
+        if (mEMAudioPlayer != null) {
+            mEMAudioPlayer.stopProgressPoll();
+            mEMAudioPlayer.reset();
+            Log.i(TAG, "stopPlayer(): EMAudioPlayer was stopped");
+        }
         playerPlayPauseBtn.setImageResource(R.drawable.ic_play_arrow_48dp);
         shouldBePlaying = false;
     }
@@ -490,7 +490,11 @@ public class TrackListFragment extends Fragment {
         final ProgressDialog playerProgessDialog = startProgressDailog(R.string.player_connecting_message);
 
         // TODO: move EMAudioPlayer to seperate class
-        mEMAudioPlayer = AudioPlayer.getPlayer(getActivity());
+        Log.d(TAG, "setupPlayer() before mEMAudioPlayer=" + mEMAudioPlayer);
+        if (mEMAudioPlayer == null) {
+            mEMAudioPlayer = new EMAudioPlayer(getActivity());
+        }
+        Log.d(TAG, "setupPlayer() after mEMAudioPlayer=" + mEMAudioPlayer);
         mEMAudioPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         mEMAudioPlayer.setDataSource(getActivity(), Uri.parse(REPUBLIKA_RADIO_URL));
         mEMAudioPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {

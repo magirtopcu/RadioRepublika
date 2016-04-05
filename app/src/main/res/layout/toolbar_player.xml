@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/player_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_gravity="bottom"
+                android:paddingLeft="8dp"
+                android:paddingStart="8dp"
+                android:theme="@style/PlayerToolbar">
+    <View
+        android:id="@+id/player_clock_divider"
+        android:layout_width="38dp"
+        android:padding="10dp"
+        android:layout_height="1dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="start"
+        android:text="-"
+        tools:ignore="HardcodedText"
+        android:background="#3d3a3a"
+        tools:text="-"
+        android:gravity="center"/>
+    <TextView
+        android:id="@+id/player_start_time"
+        android:layout_width="38dp"
+        android:layout_marginTop="10dp"
+        android:layout_above="@+id/player_clock_divider"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="start"
+        android:gravity="center"
+        android:text="-- : --"
+        tools:ignore="HardcodedText"
+        tools:text="12:40"/>
+    <TextView
+        android:id="@+id/player_end_time"
+        android:layout_width="38dp"
+        android:layout_marginBottom="10dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/player_clock_divider"
+        android:layout_centerVertical="true"
+        android:layout_gravity="start"
+        android:gravity="center_horizontal"
+        android:text="-- : --"
+        tools:ignore="HardcodedText"
+        tools:text="13:30"/>
+
+<LinearLayout
+    android:id="@+id/ll_player_title_subtitle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_centerVertical="true"
+    android:layout_marginLeft="10dp"
+    android:layout_marginStart="10dp"
+    android:layout_toEndOf="@id/player_start_time"
+    android:layout_toLeftOf="@+id/player_close"
+    android:layout_toRightOf="@id/player_start_time"
+    android:layout_toStartOf="@+id/player_close"
+    android:gravity="center_vertical"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/player_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="marquee"
+        android:gravity="bottom"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:text="Brak połączenia z internetem"
+        android:textStyle="bold"
+        tools:ignore="HardcodedText"
+        tools:text="Starcie cywilizacji - II wojna światowa oczami gen. Jaruzelskiego"
+        />
+
+    <TextView
+        android:id="@+id/player_subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:ellipsize="marquee"
+        android:gravity="start"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:text="Brak połączenia z internetem"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="12sp"
+        tools:ignore="HardcodedText"
+        tools:text="Magazyn Tomasza Terlikowskiego"/>
+</LinearLayout>
+
+<ImageButton
+    android:id="@+id/player_close"
+    android:layout_width="40dp"
+    android:layout_height="match_parent"
+    android:layout_centerVertical="true"
+    android:layout_toLeftOf="@+id/player_play_pause"
+    android:layout_toStartOf="@+id/player_play_pause"
+    android:background="@null"
+    android:padding="2dp"
+    android:scaleType="center"
+    android:src="@android:drawable/ic_lock_power_off"
+    android:tint="#ffffff"
+    />
+
+<ImageButton
+    android:id="@+id/player_play_pause"
+    android:layout_width="60dp"
+    android:layout_height="match_parent"
+    android:layout_alignParentEnd="true"
+    android:layout_alignParentRight="true"
+    android:layout_centerVertical="true"
+    android:background="@null"
+    android:padding="6dp"
+    android:src="@drawable/ic_play_arrow_48dp"
+    android:tint="#ffffff"
+    />
+</RelativeLayout>

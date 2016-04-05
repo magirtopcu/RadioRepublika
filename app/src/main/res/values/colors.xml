@@ -15,6 +15,11 @@
     <color name="schedule_background_live">#ff99cc00</color>
     <color name="schedule_background_live_darker">#7ca600</color>
 
+
     <!-- Font colors -->
     <color name="font_green">#ff99cc00</color>
+    <color name="light_blue_font_color">#33b5e5</color>
+    <color name="light_green_font_color">#ff99cc00</color>
+    <color name="light_red_font_color">#ce0606</color>
+    <color name="white_font_color">#ffffff </color>
 </resources>

@@ -16,7 +16,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class RadioProgramParser {
+public class ScheduleParser {
 
     private static final int FIRST = 0;
     private static final int SECOND = 1;
@@ -25,7 +25,7 @@ public class RadioProgramParser {
     private static final String REPUBLIKA_URL = "http://telewizjarepublika.pl/program-tv.html";
     private static final String PREMIERA = "PREMIERA";
     private static final String NA_ZYWO = "NA ŻYWO";
-    private static final String TAG = RadioProgramParser.class.getSimpleName();
+    private static final String TAG = ScheduleParser.class.getSimpleName();
 
 
 

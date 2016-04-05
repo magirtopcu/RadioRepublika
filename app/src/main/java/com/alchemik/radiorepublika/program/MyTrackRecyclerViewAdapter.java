@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alchemik.radiorepublika.R;
 import com.alchemik.radiorepublika.model.Track;
@@ -37,7 +38,7 @@ public class MyTrackRecyclerViewAdapter extends RecyclerView.Adapter<MyTrackRecy
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_track, parent, false);
+                .inflate(R.layout.fragment_track2, parent, false);
         return new ViewHolder(view);
     }
 
@@ -80,16 +81,19 @@ public class MyTrackRecyclerViewAdapter extends RecyclerView.Adapter<MyTrackRecy
 
         holder.mTypeView.setBackgroundColor(ContextCompat.getColor(mContext, backgroundColor));
         holder.mStartTimeView.setText(holder.mItem.getStartTime());
+        holder.mStartTimeView.setTextColor(ContextCompat.getColor(mContext, textColor));
         holder.mTitleView.setText(holder.mItem.getTrackTitle());
         holder.mTitleView.setTextColor(ContextCompat.getColor(mContext, textColor));
         holder.mTypeView.setText(type);
         holder.mSubtitleView.setText(subtitle);
         holder.mTypeView.setVisibility(visible);
         holder.mSubtitleView.setVisibility(visible);
+        holder.mTitleView.setSelected(true);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(mContext, holder.mItem.getTrackTitle(), Toast.LENGTH_SHORT).show();
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.

@@ -1,5 +1,6 @@
 package com.alchemik.radiorepublika.webview;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.alchemik.radiorepublika.SingleFragmentActivity;
@@ -11,6 +12,16 @@ public class WebViewActivity extends SingleFragmentActivity {
 
     @Override
     public Fragment createFragment() {
-        return null;
+        return new WebViewFragment();
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(false);
+        getSupportActionBar().setTitle("O aplikacji");
+
     }
 }

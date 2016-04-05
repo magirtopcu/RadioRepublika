@@ -28,11 +28,11 @@ public class Playlist {
     };
 
     public static List<Track> generate() {
-        return generate(ONE_MINUTE);
+        return generateSchedule(ONE_MINUTE);
     }
 
 
-    private static List<Track> generate(final int interval) {
+    private static List<Track> generateSchedule(final int interval) {
         List<Track> mTrackList = new ArrayList<>();
 
         long startTimeMillis = System.currentTimeMillis();

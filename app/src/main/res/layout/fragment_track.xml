@@ -3,42 +3,53 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               xmlns:tools="http://schemas.android.com/tools"
-             android:stretchColumns="1">
-    <TableRow android:layout_margin="2dp">
+             android:stretchColumns="2">
+    <TableRow android:layout_margin="2dp" android:layout_width="match_parent">
         <TextView
             android:id="@+id/news_start_time_tv"
             android:layout_width="100dp"
-            android:layout_height="match_parent"
+            android:layout_height="25dp"
             android:gravity="center"
             android:textAppearance="?attr/textAppearanceListItem"
             tools:text="8:10"/>
         <TextView
             android:id="@+id/news_title_tv"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:maxLines="2"
+            android:singleLine="true"
+            android:marqueeRepeatLimit ="marquee_forever"
+            android:focusable="true"
+            android:maxLines="1"
             android:layout_marginLeft="5dp"
+            android:focusableInTouchMode="true"
+            android:scrollHorizontally="true"
+            android:ellipsize="marquee"
             android:textAppearance="?attr/textAppearanceListItem"
             android:textSize="18sp"
             android:textStyle="bold"
             android:fontFamily="fonts/Oswald.ttf"
-            tools:text="Kulisy Manipulacji - Flesz wqweqweasdqwe"/>
+            tools:text="Kulisy Manipulacji - Flesz Flesz Flesz Flesz Flesz Flesz Flesz"/>
     </TableRow>
     <TableRow android:layout_margin="2dp">
         <TextView
             android:id="@+id/news_type_tv"
             android:layout_width="100dp"
-            android:layout_height="match_parent"
+            android:layout_height="25dp"
             android:textAppearance="?attr/textAppearanceListItem"
             android:textSize="13sp"
             android:background="@color/program_live_transparent"
+            android:singleLine="true"
+            android:marqueeRepeatLimit ="marquee_forever"
+            android:scrollHorizontally="true"
             android:ellipsize="marquee"
             android:gravity="center"
             tools:text="Premiera"/>
         <TextView
             android:id="@+id/news_subtitle_tv"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:singleLine="true"
+            android:maxLines="1"
+            android:layout_height="25dp"
             android:layout_marginLeft="5dp"
             android:textAppearance="?attr/textAppearanceListItem"
             android:textSize="12sp"
@@ -50,6 +61,7 @@
     <View
         android:layout_marginTop="2dp"
         android:layout_marginBottom="2dp"
+        android:layout_width="match_parent"
         android:layout_height="1dip"
         android:background="#3d3a3a" />
 </TableLayout>

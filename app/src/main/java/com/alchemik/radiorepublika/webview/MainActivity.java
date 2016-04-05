@@ -1,4 +1,4 @@
-package com.alchemik.radiorepublika;
+package com.alchemik.radiorepublika.webview;
 
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -16,7 +16,10 @@ import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.alchemik.radiorepublika.AudioPlayer;
+import com.alchemik.radiorepublika.R;
 import com.alchemik.radiorepublika.util.ConnectionUtil;
+import com.alchemik.radiorepublika.webview.CustomWebViewClient;
 import com.devbrackets.android.exomedia.EMAudioPlayer;
 
 import static android.telephony.TelephonyManager.CALL_STATE_IDLE;
@@ -28,12 +31,10 @@ public class MainActivity extends AppCompatActivity implements CustomWebViewClie
     private final String TAG = this.getClass().getSimpleName();
 
     private static final String REPUBLIKA_RADIO_URL = "http://stream5.videostar.pl:1935/tvrepublika_audio/audio.stream/playlist.m3u8";
-    private static final String REPUBLIKA_URL = "http://telewizjarepublika.pl/";
 
     public TelephonyManager telephonyManager;
 
     private ImageButton playerCloseBtn;
-    private ImageButton playerMuteBtn;
     private ImageButton playerPlayPauseBtn;
     private EMAudioPlayer mEMAudioPlayer;
 
@@ -51,17 +52,11 @@ public class MainActivity extends AppCompatActivity implements CustomWebViewClie
 
         playerPlayPauseBtn = (ImageButton) findViewById(R.id.player_play_pause);
         playerCloseBtn = (ImageButton) findViewById(R.id.player_close);
-        playerMuteBtn = (ImageButton) findViewById(R.id.player_mute);
 
         telephonyManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
 
         setupPlayer();
         setListeners();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
     }
 
     private void setListeners() {
@@ -84,13 +79,6 @@ public class MainActivity extends AppCompatActivity implements CustomWebViewClie
                 Log.d(TAG, "Player: close clicked");
                 finish();
                 System.exit(0);
-            }
-        });
-
-        playerMuteBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "Player: mute clicked");
             }
         });
 
