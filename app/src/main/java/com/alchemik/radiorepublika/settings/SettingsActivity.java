@@ -2,7 +2,6 @@ package com.alchemik.radiorepublika.settings;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 
@@ -29,13 +28,6 @@ public class SettingsActivity extends SingleFragmentActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(false); //hide icon
         getSupportActionBar().setTitle("Ustawienia");
     }
-
-    //getFragmentManager().beginTransaction().replace(android.R.id.content, new CustomPreferenceFragment()).commit();
-
-/*        if (preference.getKey().equals("pref_sync")) {
-            Toast.makeText(getActivity(), "Zmiany zostaną wprowadzone po ponownym uruchomieniu aplikacji", Toast.LENGTH_SHORT).show();
-        }*/
-
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
