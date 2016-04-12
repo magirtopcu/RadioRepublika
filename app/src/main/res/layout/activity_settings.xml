@@ -4,7 +4,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
     <fragment
-        android:name="com.alchemik.radiorepublika.settings.SettingsActivity$CustomPreferenceFragment"
+        android:name="com.alchemik.radiorepublika.settings.CustomPreferenceFragment"
         android:tag=".CustomPreferenceFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

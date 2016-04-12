@@ -14,70 +14,126 @@
         android:id="@+id/imageView"
         android:layout_width="200dp"
         android:layout_height="150dp"
+        android:layout_marginTop="24dp"
         android:src="@drawable/republika_logo"
-        android:layout_marginTop="54dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"/>
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/about_version"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Wersja 1.22"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/exomedia_default_controls_button_disabled"
-        android:layout_margin="10dp"
+        tools:text="Wersja 1.22"
         android:layout_below="@+id/imageView"
-        android:layout_centerHorizontal="true"
-        android:text="Wersja 1.22"
-        tools:text="Wersja 1.22"/>
+        android:layout_centerHorizontal="true"/>
+
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/about_author_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:textColor="@color/light_green_font_color"
-        android:text="Autor:"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/textView3"/>
+        android:layout_below="@+id/about_version"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/about_app_title"
+        tools:text="@string/about_app_title"
+        android:textColor="@color/light_green_font_color"/>
+
     <TextView
-        android:id="@+id/textView2"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/about_author"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/about_author_title"
+        android:drawableLeft="@drawable/ic_person_24dp"
+        android:drawablePadding="10dp"
         android:text="Leszek Jasek"
-        android:layout_below="@+id/textView"
-        />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        tools:ignore="HardcodedText"/>
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/about_email_adress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="dev.alchemik@gmail.com"
-        android:layout_below="@+id/textView2"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
-    <TextView
-        android:id="@+id/textView6"
-        android:textColor="@color/light_green_font_color"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:text="Biblioteki OpenSource:"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/textView5"/>
+        android:layout_below="@+id/about_author"
+        android:drawableLeft="@drawable/ic_email_24dp"
+        android:drawablePadding="10dp"
+        android:text="dev.alchemik@gmail.com"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        tools:ignore="HardcodedText"/>
+
     <TextView
-        android:id="@+id/textView7"
+        android:id="@+id/about_libs_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="ButterKnife, OkHttp, Volley, Google Maps, Realm"
-        android:layout_below="@+id/textView6"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
-
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/about_email_adress"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/about_libraries_title"
+        tools:text="@string/about_libraries_title"
+        android:textColor="@color/light_green_font_color"/>
+    <TextView
+        android:id="@+id/about_libs_exomedia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/about_libs_title"
+        android:drawableLeft="@drawable/ic_launch_24dp"
+        android:drawableTint="@android:color/white"
+        android:drawablePadding="10dp"
+        android:gravity="center_vertical"
+        android:autoLink="web"
+        android:text="@string/about_exomedia"
+        tools:text="Exomedia"
+        android:textSize="16sp"/>
+    <TextView
+        android:id="@+id/about_libs_jsoup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/about_libs_exomedia"
+        android:drawableLeft="@drawable/ic_launch_24dp"
+        android:drawableTint="@android:color/white"
+        android:drawablePadding="10dp"
+        android:gravity="center_vertical"
+        android:text="JSoup"
+        tools:text="JSoup"
+        android:textSize="16sp"/>
+    <TextView
+        android:id="@+id/about_libs_jodatime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/about_libs_jsoup"
+        android:drawableLeft="@drawable/ic_launch_24dp"
+        android:drawableTint="@android:color/white"
+        android:drawablePadding="10dp"
+        android:gravity="center_vertical"
+        android:text="Joda-Time"
+        tools:text="Joda-Time"
+        android:textSize="16sp"/>
+    <TextView
+        android:id="@+id/about_libs_crashlytics"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/about_libs_jodatime"
+        android:drawableLeft="@drawable/ic_launch_24dp"
+        android:drawableTint="@android:color/white"
+        android:drawablePadding="10dp"
+        android:gravity="center_vertical"
+        android:text="Crashlytics"
+        tools:text="Crashlytics"
+        android:textSize="16sp"/>
 </RelativeLayout>
