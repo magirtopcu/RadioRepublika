@@ -1,7 +1,6 @@
 package com.alchemik.radiorepublika.program;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -10,18 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alchemik.radiorepublika.R;
 import com.alchemik.radiorepublika.model.Track;
+import com.alchemik.radiorepublika.views.CustomFontTextView;
 
 import java.util.List;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link Track} and makes a call to the
- * specified {@link TrackListFragment.OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
- */
 public class MyTrackRecyclerViewAdapter extends RecyclerView.Adapter<MyTrackRecyclerViewAdapter.ViewHolder> {
 
     private static final String TAG = MyTrackRecyclerViewAdapter.class.getSimpleName();
@@ -89,18 +83,6 @@ public class MyTrackRecyclerViewAdapter extends RecyclerView.Adapter<MyTrackRecy
         holder.mTypeView.setVisibility(visible);
         holder.mSubtitleView.setVisibility(visible);
         holder.mTitleView.setSelected(true);
-
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(mContext, holder.mItem.getTrackTitle(), Toast.LENGTH_SHORT).show();
-                if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    //mListener.showMessage(holder.mItem);
-                }
-            }
-        });
     }
 
     @Override
@@ -110,8 +92,8 @@ public class MyTrackRecyclerViewAdapter extends RecyclerView.Adapter<MyTrackRecy
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mStartTimeView;
-        public final TextView mTitleView;
+        public final CustomFontTextView mStartTimeView;
+        public final CustomFontTextView mTitleView;
         public final TextView mTypeView;
         public final TextView mSubtitleView;
         public Track mItem;
@@ -119,14 +101,10 @@ public class MyTrackRecyclerViewAdapter extends RecyclerView.Adapter<MyTrackRecy
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mStartTimeView = (TextView) view.findViewById(R.id.news_start_time_tv);
-            mTitleView = (TextView) view.findViewById(R.id.news_title_tv);
+            mStartTimeView = (CustomFontTextView) view.findViewById(R.id.news_start_time_tv);
+            mTitleView = (CustomFontTextView) view.findViewById(R.id.news_title_tv);
             mTypeView = (TextView) view.findViewById(R.id.news_type_tv);
             mSubtitleView = (TextView) view.findViewById(R.id.news_subtitle_tv);
-
-            Typeface font = Typeface.createFromAsset(mContext.getAssets(), "fonts/Oswald.ttf");
-            mTitleView.setTypeface(font);
-            mSubtitleView.setTypeface(font);
         }
 
         @Override

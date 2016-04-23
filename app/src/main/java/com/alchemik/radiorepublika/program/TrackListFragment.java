@@ -3,7 +3,6 @@ package com.alchemik.radiorepublika.program;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
@@ -33,6 +32,7 @@ import com.alchemik.radiorepublika.model.Track;
 import com.alchemik.radiorepublika.parser.ScheduleParser;
 import com.alchemik.radiorepublika.service.RadioService;
 import com.alchemik.radiorepublika.util.ConnectionUtil;
+import com.alchemik.radiorepublika.views.CustomFontTextView;
 import com.devbrackets.android.exomedia.EMAudioPlayer;
 
 import org.jsoup.helper.StringUtil;
@@ -64,8 +64,8 @@ public class TrackListFragment extends Fragment {
     public TelephonyManager telephonyManager;
     public ConnectivityManager connectivityManager;
 
-    private TextView playerTitleTV;
-    private TextView playerSubtitleTV;
+    private CustomFontTextView playerTitleTV;
+    private CustomFontTextView playerSubtitleTV;
     private TextView playerTimeTV;
     private TextView playerEndTimeTV;
     private ImageButton playerCloseBtn;
@@ -175,16 +175,12 @@ public class TrackListFragment extends Fragment {
         playerPlayPauseBtn = (ImageButton) view.findViewById(R.id.player_play_pause);
         playerCloseBtn = (ImageButton) view.findViewById(R.id.player_close);
         scheduleSyncBtn = (ImageButton) view.findViewById(R.id.schedule_sync_button);
-        playerTitleTV = (TextView) view.findViewById(R.id.player_title);
-        playerSubtitleTV = (TextView) view.findViewById(R.id.player_subtitle);
+        playerTitleTV = (CustomFontTextView) view.findViewById(R.id.player_title);
+        playerSubtitleTV = (CustomFontTextView) view.findViewById(R.id.player_subtitle);
         playerTimeTV = (TextView) view.findViewById(R.id.player_start_time);
         playerEndTimeTV = (TextView) view.findViewById(R.id.player_end_time);
         telephonyManager = (TelephonyManager) getActivity().getSystemService(Context.TELEPHONY_SERVICE);
         connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Oswald.ttf");
-        playerTitleTV.setTypeface(font);
-        playerSubtitleTV.setTypeface(font);
 
         setButtonListeners();
         tryToConnect();
