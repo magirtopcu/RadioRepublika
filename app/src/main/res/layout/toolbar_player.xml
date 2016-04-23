@@ -66,7 +66,7 @@
     android:gravity="center_vertical"
     android:orientation="vertical">
 
-    <TextView
+    <com.alchemik.radiorepublika.views.CustomFontTextView
         android:id="@+id/player_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -80,7 +80,7 @@
         tools:text="Starcie cywilizacji - II wojna światowa oczami gen. Jaruzelskiego"
         />
 
-    <TextView
+    <com.alchemik.radiorepublika.views.CustomFontTextView
         android:id="@+id/player_subtitle"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -120,6 +120,6 @@
     android:background="@null"
     android:padding="6dp"
     android:src="@drawable/ic_play_arrow_48dp"
-    android:tint="#ffffff"
+    android:tint="@color/light_green_font_color"
     />
 </RelativeLayout>
