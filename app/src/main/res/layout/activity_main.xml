@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
+    <!--<LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -110,5 +110,5 @@
                 android:src="@drawable/ic_play_arrow_48dp"
                 android:tint="#ffffff"/>
         </RelativeLayout>
-    </LinearLayout>
+    </LinearLayout>-->
 </android.support.design.widget.CoordinatorLayout>

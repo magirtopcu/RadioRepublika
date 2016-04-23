@@ -13,7 +13,7 @@
         android:textAppearance="?attr/textAppearanceListItem"
         tools:text="8:10"/>
 
-    <TextView
+    <com.alchemik.radiorepublika.views.CustomFontTextView
         android:id="@+id/news_title_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
         android:textSize="13sp"
         tools:text="Premiera"/>
 
-    <TextView
+    <com.alchemik.radiorepublika.views.CustomFontTextView
         android:id="@+id/news_subtitle_tv"
         android:layout_width="wrap_content"
         android:layout_height="25dp"
