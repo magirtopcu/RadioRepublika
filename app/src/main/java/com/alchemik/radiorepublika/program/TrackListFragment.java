@@ -1,10 +1,8 @@
 package com.alchemik.radiorepublika.program;
 
 import android.app.ProgressDialog;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.graphics.Typeface;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -13,7 +11,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -31,20 +28,13 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alchemik.radiorepublika.AudioPlayer;
 import com.alchemik.radiorepublika.R;
 import com.alchemik.radiorepublika.model.Track;
 import com.alchemik.radiorepublika.parser.ScheduleParser;
 import com.alchemik.radiorepublika.service.RadioService;
 import com.alchemik.radiorepublika.util.ConnectionUtil;
-import com.crashlytics.android.Crashlytics;
-import com.crashlytics.android.core.CrashlyticsCore;
 import com.devbrackets.android.exomedia.EMAudioPlayer;
 
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.ISODateTimeFormat;
 import org.jsoup.helper.StringUtil;
 
 import java.io.IOException;
@@ -54,8 +44,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
-import io.fabric.sdk.android.Fabric;
 
 import static android.telephony.TelephonyManager.CALL_STATE_IDLE;
 import static android.telephony.TelephonyManager.CALL_STATE_RINGING;
@@ -100,8 +88,8 @@ public class TrackListFragment extends Fragment {
     private RecyclerView recyclerView;
     private MyTrackRecyclerViewAdapter mAdapter;
 
-    private Handler handler;
-    private Runnable updateTask;
+    //private Handler handler;
+    //private Runnable updateTask;
 
     private RadioService mRadioService;
     private Intent playRadioIntent;
@@ -115,11 +103,11 @@ public class TrackListFragment extends Fragment {
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static TrackListFragment newInstance(int columnCount) {
+    public static TrackListFragment newInstance() {
         TrackListFragment fragment = new TrackListFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
+        //args.putInt(ARG_COLUMN_COUNT, columnCount);
+        //fragment.setArguments(args);
         return fragment;
     }
 
@@ -140,6 +128,7 @@ public class TrackListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         Log.i(TAG, "LIFECYCLE onCreate() called");
 
         if (getArguments() != null) {
@@ -148,25 +137,27 @@ public class TrackListFragment extends Fragment {
     }
 
 
-    //ServiceConnection serviceConnection = new ServiceConnection() {
-    //    @Override
-    //    public void onServiceConnected(ComponentName name, IBinder service) {
-    //        Log.d(TAG, "onServiceConnected() ");
-    //        RadioService.RadioBinder binder = (RadioService.RadioBinder)service;
-    //        //get service
-    //        mRadioService = binder.getService();
-    //        //pass list
-    //        //mRadioService.setList(songList);
-    //        radioBound = true;
-    //
-    //    }
-    //
-    //    @Override
-    //    public void onServiceDisconnected(ComponentName name) {
-    //        Log.d(TAG, "onServiceDisconnected() ");
-    //        radioBound = false;
-    //    }
-    //};
+/*
+    ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            Log.d(TAG, "onServiceConnected() ");
+            RadioService.RadioBinder binder = (RadioService.RadioBinder)service;
+            //get service
+            mRadioService = binder.getService();
+            //pass list
+            //mRadioService.setList(songList);
+            radioBound = true;
+
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            Log.d(TAG, "onServiceDisconnected() ");
+            radioBound = false;
+        }
+    };
+*/
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
@@ -174,12 +165,7 @@ public class TrackListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_track_list, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
 
-
-        // Set the adapter
-        //if (view instanceof RecyclerView) {
-        //}
         Context context = view.getContext();
-        //recyclerView = (RecyclerView) view;
         if (mColumnCount <= 1) {
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
         } else {
@@ -206,8 +192,10 @@ public class TrackListFragment extends Fragment {
     }
 
     private void tryToConnect() {
+        Log.d(TAG, "tryToConnect: before connectionHandler");
         final Handler connectionHandler = new Handler();
         final int MAX_ATTEMPT = 3;
+
         connectionHandler.post(new Runnable() {
             int attempt = 0;
 
@@ -215,14 +203,15 @@ public class TrackListFragment extends Fragment {
             public void run() {
                 Log.d(TAG, "run: attempt=" + attempt);
                 ++attempt;
+
                 if (!ConnectionUtil.isConnectedToNetwork(getActivity()) && attempt <= MAX_ATTEMPT) {
                     connectionHandler.postDelayed(this, 2000);
                 } else if (ConnectionUtil.isConnectedToNetwork(getActivity())){
-                        scheduleSyncBtn.clearAnimation();
-                        scheduleSyncBtn.setVisibility(View.INVISIBLE);
-                        setupPlayer();
-                        setAudioListeners();
-                        new AsyncScheduleParserTask().execute();
+                    scheduleSyncBtn.clearAnimation();
+                    scheduleSyncBtn.setVisibility(View.INVISIBLE);
+                    setupPlayer();
+                    setAudioListeners();
+                    new AsyncScheduleParserTask().execute();
                 } else {
                     scheduleSyncBtn.setVisibility(View.VISIBLE);
                     showConnectionErrorMsg();
@@ -230,31 +219,8 @@ public class TrackListFragment extends Fragment {
             }
         });
         // FIXME
-        // handler.removeCallbacks();
-
-        //final int maxAttempts = 5;
-//
-        //for (int attempt = 0; attempt < maxAttempts; attempt++) {
-        //    if (ConnectionUtil.isConnectedToNetwork(getActivity())) {
-        //        scheduleSyncBtn.setVisibility(View.INVISIBLE);
-        //        setupPlayer();
-        //        setAudioListeners();
-        //        new AsyncScheduleParserTask().execute();
-        //    }
-        //    wait();
-        //}
-
-        //
-        //if (ConnectionUtil.isConnectedToNetwork(getActivity())) {
-        //    scheduleSyncBtn.clearAnimation();
-        //    scheduleSyncBtn.setVisibility(View.INVISIBLE);
-        //    setupPlayer();
-        //    setAudioListeners();
-        //    new AsyncScheduleParserTask().execute();
-        //} else {
-        //    scheduleSyncBtn.setVisibility(View.VISIBLE);
-        //    showConnectionErrorMsg()
-        //}
+        Log.d(TAG, "setupTimer: after connectionHandler = " + connectionHandler);
+        // connectionHandler.removeCallbacks();
     }
 
     @Override
@@ -262,12 +228,12 @@ public class TrackListFragment extends Fragment {
         super.onStart();
         Log.i(TAG, "LIFECYCLE onStart() called");
 
-        //if (playRadioIntent == null) {
-        //    Log.d(TAG, "inside playRadioIntent == null clause");
-        //    playRadioIntent = new Intent(getActivity(), RadioService.class);
-        //    getActivity().bindService(playRadioIntent, serviceConnection, Context.BIND_AUTO_CREATE);
-        //    getActivity().startService(playRadioIntent);
-        //}
+/*        if (playRadioIntent == null) {
+            Log.d(TAG, "inside playRadioIntent == null clause");
+            playRadioIntent = new Intent(getActivity(), RadioService.class);
+            getActivity().bindService(playRadioIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+            getActivity().startService(playRadioIntent);
+        }*/
     }
 
     @Override
@@ -289,6 +255,7 @@ public class TrackListFragment extends Fragment {
             }
         };
         handler.post(updateTask);
+        Log.d(TAG, "setupTimer: after handler");
     }
 
     private void updateUI() {
@@ -355,6 +322,15 @@ public class TrackListFragment extends Fragment {
         super.onDestroy();
     }
 
+    /*
+     * An AsyncTask is not tied to the life cycle of the Activity that contains it. So, for example, if you start an AsyncTask inside an Activity and the user rotates the device, the Activity will be destroyed (and a new Activity instance will be created) but the AsyncTask will not die but instead goes on living until it completes.
+     *
+     * Then, when the AsyncTask does complete, rather than updating the UI of the new Activity, it updates the former instance of the Activity (i.e., the one in which it was created but that is not displayed anymore!). This can lead to an Exception (of the type java.lang.IllegalArgumentException: View not attached to window manager if you use, for instance, findViewById to retrieve a view inside the Activity).
+     *
+     * There’s also the potential for this to result in a memory leak since the AsyncTask maintains a reference to the Activty, which prevents the Activity from being garbage collected as long as the AsyncTask remains alive.
+     *
+     * For these reasons, using AsyncTasks for long-running background tasks is generally a bad idea . Rather, for long-running background tasks, a different mechanism (such as a service) should be employed.
+     */
     private class AsyncScheduleParserTask extends AsyncTask<Void, Void , List<Track>> {
 
         ProgressDialog scheduleProgressDialog;
@@ -381,6 +357,7 @@ public class TrackListFragment extends Fragment {
         protected void onPostExecute(List<Track> tracks) {
             Log.d("AsyncScheduleParserTask", "onPostExecute: tracks.size()" + tracks.size());
             mTrackList = tracks;
+            /* MOCK */
             //mTrackList = Playlist.generate();
             mAdapter = new MyTrackRecyclerViewAdapter(getActivity(), mTrackList, mListener);
             recyclerView.setAdapter(mAdapter);
@@ -402,11 +379,6 @@ public class TrackListFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 playerToogle();
-                //if (ConnectionUtil.isConnectedToNetwork(getActivity())) {
-                //    playerToogle();
-                //} else {
-                //    //showMessage(R.string.snackbar_no_internet_connection);
-                //}
             }
         });
 
@@ -414,6 +386,7 @@ public class TrackListFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 onDestroy();
+                //FIXME: find better solution
                 getActivity().finish();
                 System.exit(0);
             }
@@ -440,12 +413,12 @@ public class TrackListFragment extends Fragment {
                 if (state == CALL_STATE_RINGING) {
                     if (mEMAudioPlayer.isPlaying()) {
                         mEMAudioPlayer.pause();
-                        Log.d(TAG, "onCallStateChanged: CALL_STATE_RINGING ~ AudioPLayer pause");
+                        Log.i(TAG, "onCallStateChanged: CALL_STATE_RINGING ~ AudioPLayer pause");
                     }
                 } else if (state == CALL_STATE_IDLE) {
                     if (!mEMAudioPlayer.isPlaying() && shouldBePlaying) {
                         mEMAudioPlayer.start();
-                        Log.d(TAG, "onCallStateChanged: CALL_STATE_IDLE ~ AudioPlayer start");
+                        Log.i(TAG, "onCallStateChanged: CALL_STATE_IDLE ~ AudioPlayer start");
                     }
                 }
             }
@@ -455,7 +428,6 @@ public class TrackListFragment extends Fragment {
     }
 
     public void playerToogle() {
-        //Log.d(TAG, "playerToogle: mEMAudioPlayer.isPlaying() = " + mEMAudioPlayer.isPlaying() + ", shouldBePlaying = " + shouldBePlaying);
         if (mEMAudioPlayer != null && mEMAudioPlayer.isPlaying() && shouldBePlaying) {
             stopPlayer();
         } else if (!shouldBePlaying) {
@@ -485,6 +457,7 @@ public class TrackListFragment extends Fragment {
         shouldBePlaying = true;
     }
 
+    //FIXME: avoid player recreation on config (screen) changes
     private void setupPlayer() {
 
         final ProgressDialog playerProgessDialog = startProgressDailog(R.string.player_connecting_message);
