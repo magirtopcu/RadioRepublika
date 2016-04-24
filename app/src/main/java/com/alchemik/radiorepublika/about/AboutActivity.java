@@ -14,12 +14,16 @@ import android.widget.Toast;
 import com.alchemik.radiorepublika.BuildConfig;
 import com.alchemik.radiorepublika.R;
 
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class AboutActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
+        ButterKnife.bind(this);
 
         ((TextView) findViewById(R.id.about_version)).setText("Wersja: " + BuildConfig.VERSION_NAME);
 
@@ -32,33 +36,56 @@ public class AboutActivity extends AppCompatActivity {
         jsoupLib.setText(Html.fromHtml(getString(R.string.about_jsoup)));
         crashlyticsLib.setText(Html.fromHtml(getString(R.string.about_crashlytics)));
 
-        View.OnClickListener onLibClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.about_libs_exomedia:
-                        openWebPage(R.string.about_exomedia_url);
-                        Toast.makeText(AboutActivity.this, ((TextView)v).getText(), Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.about_libs_jodatime:
-                        openWebPage(R.string.about_jodatime_url);
-                        Toast.makeText(AboutActivity.this, ((TextView)v).getText(), Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.about_libs_jsoup:
-                        openWebPage(R.string.about_jsoup_url);
-                        Toast.makeText(AboutActivity.this, ((TextView)v).getText(), Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.about_libs_crashlytics:
-                        openWebPage(R.string.about_crashlytics_url);
-                        Toast.makeText(AboutActivity.this, ((TextView)v).getText(), Toast.LENGTH_SHORT).show();
-                        break;
-                }
-            }
-        };
-        exomediaLib.setOnClickListener(onLibClickListener);
-        jodaTimeLib.setOnClickListener(onLibClickListener);
-        jsoupLib.setOnClickListener(onLibClickListener);
-        crashlyticsLib.setOnClickListener(onLibClickListener);
+        //View.OnClickListener onLibClickListener = new View.OnClickListener() {
+        //
+        //    @Override
+        //    public void onClick(View v) {
+        //        switch (v.getId()) {
+        //            case R.id.about_libs_exomedia:
+        //                openWebPage(R.string.about_exomedia_url);
+        //                Toast.makeText(AboutActivity.this, ((TextView)v).getText(), Toast.LENGTH_SHORT).show();
+        //                break;
+        //            case R.id.about_libs_jodatime:
+        //                openWebPage(R.string.about_jodatime_url);
+        //                Toast.makeText(AboutActivity.this, ((TextView)v).getText(), Toast.LENGTH_SHORT).show();
+        //                break;
+        //            case R.id.about_libs_jsoup:
+        //                openWebPage(R.string.about_jsoup_url);
+        //                Toast.makeText(AboutActivity.this, ((TextView)v).getText(), Toast.LENGTH_SHORT).show();
+        //                break;
+        //            case R.id.about_libs_crashlytics:
+        //                openWebPage(R.string.about_crashlytics_url);
+        //                Toast.makeText(AboutActivity.this, ((TextView)v).getText(), Toast.LENGTH_SHORT).show();
+        //                break;
+        //        }
+        //    }
+        //};
+        //exomediaLib.setOnClickListener(onLibClickListener);
+        //jodaTimeLib.setOnClickListener(onLibClickListener);
+        //jsoupLib.setOnClickListener(onLibClickListener);
+        //crashlyticsLib.setOnClickListener(onLibClickListener);
+    }
+
+    @OnClick({R.id.about_libs_exomedia, R.id.about_libs_jodatime, R.id.about_libs_jsoup, R.id.about_libs_crashlytics})
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.about_libs_exomedia:
+                openWebPage(R.string.about_exomedia_url);
+                Toast.makeText(AboutActivity.this, ((TextView)v).getText(), Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.about_libs_jodatime:
+                openWebPage(R.string.about_jodatime_url);
+                Toast.makeText(AboutActivity.this, ((TextView)v).getText(), Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.about_libs_jsoup:
+                openWebPage(R.string.about_jsoup_url);
+                Toast.makeText(AboutActivity.this, ((TextView)v).getText(), Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.about_libs_crashlytics:
+                openWebPage(R.string.about_crashlytics_url);
+                Toast.makeText(AboutActivity.this, ((TextView)v).getText(), Toast.LENGTH_SHORT).show();
+                break;
+        }
     }
 
     public void openWebPage(@StringRes Integer url) {

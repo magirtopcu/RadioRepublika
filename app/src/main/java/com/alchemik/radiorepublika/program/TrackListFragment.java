@@ -45,6 +45,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 import static android.telephony.TelephonyManager.CALL_STATE_IDLE;
 import static android.telephony.TelephonyManager.CALL_STATE_RINGING;
 
@@ -64,13 +68,20 @@ public class TrackListFragment extends Fragment {
     public TelephonyManager telephonyManager;
     public ConnectivityManager connectivityManager;
 
-    private CustomFontTextView playerTitleTV;
-    private CustomFontTextView playerSubtitleTV;
-    private TextView playerTimeTV;
-    private TextView playerEndTimeTV;
-    private ImageButton playerCloseBtn;
-    private ImageButton playerPlayPauseBtn;
-    private ImageButton scheduleSyncBtn;
+    @Bind(R.id.player_title)
+    public CustomFontTextView playerTitleTV;
+    @Bind(R.id.player_subtitle)
+    public CustomFontTextView playerSubtitleTV;
+    @Bind(R.id.player_start_time)
+    public TextView playerTimeTV;
+    @Bind(R.id.player_end_time)
+    public TextView playerEndTimeTV;
+    @Bind(R.id.player_close)
+    public ImageButton playerCloseBtn;
+    @Bind(R.id.player_play_pause)
+    public ImageButton playerPlayPauseBtn;
+    @Bind(R.id.schedule_sync_button)
+    public ImageButton scheduleSyncBtn;
 
     private EMAudioPlayer mEMAudioPlayer;
 
@@ -84,8 +95,9 @@ public class TrackListFragment extends Fragment {
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
 
+    @Bind(R.id.recycler_view)
+    public RecyclerView recyclerView;
     private List<Track> mTrackList;
-    private RecyclerView recyclerView;
     private MyTrackRecyclerViewAdapter mAdapter;
 
     //private Handler handler;
@@ -164,6 +176,7 @@ public class TrackListFragment extends Fragment {
         Log.i(TAG, "LIFECYCLE onCreateView() called");
         View view = inflater.inflate(R.layout.fragment_track_list, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        ButterKnife.bind(this, view);
 
         Context context = view.getContext();
         if (mColumnCount <= 1) {
@@ -172,13 +185,6 @@ public class TrackListFragment extends Fragment {
             recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
         }
 
-        playerPlayPauseBtn = (ImageButton) view.findViewById(R.id.player_play_pause);
-        playerCloseBtn = (ImageButton) view.findViewById(R.id.player_close);
-        scheduleSyncBtn = (ImageButton) view.findViewById(R.id.schedule_sync_button);
-        playerTitleTV = (CustomFontTextView) view.findViewById(R.id.player_title);
-        playerSubtitleTV = (CustomFontTextView) view.findViewById(R.id.player_subtitle);
-        playerTimeTV = (TextView) view.findViewById(R.id.player_start_time);
-        playerEndTimeTV = (TextView) view.findViewById(R.id.player_end_time);
         telephonyManager = (TelephonyManager) getActivity().getSystemService(Context.TELEPHONY_SERVICE);
         connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -299,6 +305,12 @@ public class TrackListFragment extends Fragment {
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
+
+    @Override
     public void onDestroy() {
         Log.i(TAG, "LIFECYCLE onDestroy() called mEMAudioPlayer=" + mEMAudioPlayer);
         //getActivity().stopService(playRadioIntent);
@@ -371,34 +383,58 @@ public class TrackListFragment extends Fragment {
 
     }
     private void setButtonListeners() {
-        playerPlayPauseBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                playerToogle();
+
+        //playerPlayPauseBtn.setOnClickListener(new View.OnClickListener() {
+        //    @Override
+        //    public void onClick(View v) {
+        //        playerToogle();
+        //    }
+        //});
+
+        //playerCloseBtn.setOnClickListener(new View.OnClickListener() {
+        //    @Override
+        //    public void onClick(View v) {
+        //        closeApplication();
+        //    }
+        //});
+
+
+        //scheduleSyncBtn.setOnClickListener(new View.OnClickListener() {
+        //    @Override
+        //    public void onClick(View v) {
+        //        synchronizeSchedule();
+        //    }
+        //});
+
+    }
+
+    @OnClick(R.id.schedule_sync_button)
+    private void synchronizeSchedule() {
+        Log.d(TAG, "scheduleSyncBtn clicked");
+        Animation rotateAnim = AnimationUtils.loadAnimation(getActivity(), R.anim.sync_button_rotation);
+        scheduleSyncBtn.startAnimation(rotateAnim);
+        tryToConnect();
+    }
+
+    @OnClick(R.id.player_close)
+    private void closeApplication() {
+        onDestroy();
+        //FIXME: find better solution
+        getActivity().finish();
+        System.exit(0);
+    }
+
+    @OnClick(R.id.player_play_pause)
+    public void playerToogle() {
+        if (mEMAudioPlayer != null && mEMAudioPlayer.isPlaying() && shouldBePlaying) {
+            stopPlayer();
+        } else if (!shouldBePlaying) {
+            if (ConnectionUtil.isConnectedToNetwork(getActivity())) {
+                setupPlayer();
+            } else {
+                showConnectionErrorMsg();
             }
-        });
-
-        playerCloseBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onDestroy();
-                //FIXME: find better solution
-                getActivity().finish();
-                System.exit(0);
-            }
-        });
-
-
-        scheduleSyncBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "scheduleSyncBtn clicked");
-                Animation rotateAnim = AnimationUtils.loadAnimation(getActivity(), R.anim.sync_button_rotation);
-                scheduleSyncBtn.startAnimation(rotateAnim);
-                tryToConnect();
-            }
-        });
-
+        }
     }
 
     private void setAudioListeners() {
@@ -420,19 +456,6 @@ public class TrackListFragment extends Fragment {
             }
         };
         telephonyManager.listen(stateListener, PhoneStateListener.LISTEN_CALL_STATE);
-
-    }
-
-    public void playerToogle() {
-        if (mEMAudioPlayer != null && mEMAudioPlayer.isPlaying() && shouldBePlaying) {
-            stopPlayer();
-        } else if (!shouldBePlaying) {
-            if (ConnectionUtil.isConnectedToNetwork(getActivity())) {
-                setupPlayer();
-            } else {
-                showConnectionErrorMsg();
-            }
-        }
     }
 
     public void stopPlayer() {

@@ -16,6 +16,9 @@ import com.alchemik.radiorepublika.views.CustomFontTextView;
 
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 public class MyTrackRecyclerViewAdapter extends RecyclerView.Adapter<MyTrackRecyclerViewAdapter.ViewHolder> {
 
     private static final String TAG = MyTrackRecyclerViewAdapter.class.getSimpleName();
@@ -31,8 +34,7 @@ public class MyTrackRecyclerViewAdapter extends RecyclerView.Adapter<MyTrackRecy
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_track2, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_track2, parent, false);
         return new ViewHolder(view);
     }
 
@@ -92,19 +94,22 @@ public class MyTrackRecyclerViewAdapter extends RecyclerView.Adapter<MyTrackRecy
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final CustomFontTextView mStartTimeView;
-        public final CustomFontTextView mTitleView;
-        public final TextView mTypeView;
-        public final TextView mSubtitleView;
+
+        @Bind(R.id.news_start_time_tv)
+        public TextView mStartTimeView;
+        @Bind(R.id.news_title_tv)
+        public CustomFontTextView mTitleView;
+        @Bind(R.id.news_type_tv)
+        public TextView mTypeView;
+        @Bind(R.id.news_subtitle_tv)
+        public CustomFontTextView mSubtitleView;
+
         public Track mItem;
 
         public ViewHolder(View view) {
             super(view);
+            ButterKnife.bind(this, view);
             mView = view;
-            mStartTimeView = (CustomFontTextView) view.findViewById(R.id.news_start_time_tv);
-            mTitleView = (CustomFontTextView) view.findViewById(R.id.news_title_tv);
-            mTypeView = (TextView) view.findViewById(R.id.news_type_tv);
-            mSubtitleView = (TextView) view.findViewById(R.id.news_subtitle_tv);
         }
 
         @Override
