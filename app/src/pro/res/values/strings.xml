@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Radio Republika</string>
+    <string name="app_name">Radio Republika Pro</string>
     <string name="snackbar_no_internet_connection">Brak połączenia z Internetem</string>
     <string name="webview_url_out_of_scope">Próbujesz wyjść poza stronę telewizjarepublika.pl</string>
     <string name="webview_error">Wystąpił błąd, spróbuj ponownie</string>
@@ -29,4 +29,5 @@
     <string name="about_jsoup_url">http://jsoup.org/</string>
     <string name="about_crashlytics">Crashlytics</string>
     <string name="about_crashlytics_url">https://try.crashlytics.com/</string>
+    <string name="hello">Pro</string>
 </resources>

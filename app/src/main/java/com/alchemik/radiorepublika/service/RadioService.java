@@ -1,12 +1,16 @@
 package com.alchemik.radiorepublika.service;
 
+import android.app.Notification;
 import android.app.Service;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Binder;
 import android.os.IBinder;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.util.Log;
+
+import com.alchemik.radiorepublika.R;
 
 /**
  * Created by Leszek Jasek on 22-Mar-16.
@@ -14,15 +18,18 @@ import android.util.Log;
 public class RadioService extends Service implements MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener, MediaPlayer.OnCompletionListener{
 
     private static final String TAG = RadioService.class.getSimpleName();
+    private static final int NOTIFY_ID = 1;
     private final IBinder radioBind = new RadioBinder();
 
     @Override
     public void onCreate() {
-        super.onCreate();
-
         Log.d(TAG, "onCreate() called");
         //create player
-        initRadio();
+        try {
+            initRadio();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Nullable
@@ -55,6 +62,7 @@ public class RadioService extends Service implements MediaPlayer.OnPreparedListe
 
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra) {
+        mp.reset();
         return false;
     }
 
@@ -63,12 +71,28 @@ public class RadioService extends Service implements MediaPlayer.OnPreparedListe
         Log.d(TAG, "onPrepared() called");
     }
 
-    public void initRadio() {
+    public void initRadio() throws InterruptedException {
         //The wake lock will let playback continue when the device becomes idle and we set the stream type to music
         //player.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
         //player.setOnPreparedListener(this);
         //player.setOnCompletionListener(this);
         //player.setOnErrorListener(this);
+
+        Notification.Builder builder = new Notification.Builder(this);
+
+        builder.setSmallIcon(R.drawable.republika_logo)
+                .setTicker("Title")
+                .setOngoing(true)
+                .setContentTitle("Subtitle")
+                .setContentText("Title2");
+        Notification not = builder.build();
+
+        startForeground(NOTIFY_ID, not);
+        for (int i = 0; i < 20; i++) {
+            Log.d(TAG, "initRadio: " + i + "s");
+            Thread.sleep(1000);
+        }
+
         Log.d(TAG, "initRadio: called");
     }
 
@@ -76,6 +100,12 @@ public class RadioService extends Service implements MediaPlayer.OnPreparedListe
         songs=theSongs;
     }*/
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy: called");
+        stopForeground(true);
+    }
 
     public class RadioBinder extends Binder {
         public RadioService getService() {

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/pref_category_title_privacy">
+        <CheckBoxPreference
+            android:key="pref_sync"
+            android:title="@string/pref_title_analytics"
+            android:singleLine="false"
+            android:lines="2"
+            android:summary="@string/pref_summary_analytics"
+            android:defaultValue="true" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/pref_category_title_about">
+        <Preference android:title="@string/pref_title_about_app">
+            <intent android:targetPackage="com.alchemik.radiorepublika" android:targetClass="com.alchemik.radiorepublika.pro.about.AboutActivity"/>
+        </Preference>
+        <Preference android:key="pref_send_feedback" android:title="@string/pref_title_send_feedback">
+<!--            <intent android:action="android.intent.action.VIEW" android:data="mailto:dev.alchemik@gmail.com">
+                <extra android:name="android.intent.extra.SUBJECT"
+                       android:value="@string/pref_feedback_subject" />
+            </intent>-->
+        </Preference>
+    </PreferenceCategory>
+</PreferenceScreen>

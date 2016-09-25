@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.alchemik.radiorepublika.AudioPlayer;
 import com.alchemik.radiorepublika.R;
 import com.alchemik.radiorepublika.util.ConnectionUtil;
+import com.alchemik.radiorepublika.util.Constans;
 import com.alchemik.radiorepublika.webview.CustomWebViewClient;
 import com.devbrackets.android.exomedia.EMAudioPlayer;
 
@@ -29,8 +30,6 @@ import static android.telephony.TelephonyManager.CALL_STATE_RINGING;
 public class MainActivity extends AppCompatActivity implements CustomWebViewClient.OnUrlOutOfScopeClickedListener{
 
     private final String TAG = this.getClass().getSimpleName();
-
-    private static final String REPUBLIKA_RADIO_URL = "http://stream5.videostar.pl:1935/tvrepublika_audio/audio.stream/playlist.m3u8";
 
     public TelephonyManager telephonyManager;
 
@@ -132,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements CustomWebViewClie
 
         mEMAudioPlayer = AudioPlayer.getPlayer(this);
         mEMAudioPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        mEMAudioPlayer.setDataSource(this, Uri.parse(REPUBLIKA_RADIO_URL));
+        mEMAudioPlayer.setDataSource(this, Uri.parse(Constans.REPUBLIKA_RADIO_URL));
         mEMAudioPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
             @Override
             public boolean onError(MediaPlayer mp, int what, int extra) {

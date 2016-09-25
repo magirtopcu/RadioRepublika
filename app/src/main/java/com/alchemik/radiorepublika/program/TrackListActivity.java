@@ -13,7 +13,7 @@ public class TrackListActivity extends SingleFragmentActivity implements TrackLi
 
     @Override
     public Fragment createFragment() {
-        return new TrackListFragment();
+        return TrackListFragment.newInstance();
     }
 
     @Override

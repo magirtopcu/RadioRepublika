@@ -1,7 +1,5 @@
 package com.alchemik.radiorepublika;
 
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -17,8 +15,6 @@ import android.view.MenuItem;
 import com.alchemik.radiorepublika.settings.SettingsActivity;
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
-
-import java.text.SimpleDateFormat;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -36,7 +32,6 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
@@ -46,7 +41,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
         }
 
 
-        //TODO: disactivate analytics on user request in settings (only once!)
+        //TODO: deactivate analytics in settings on user request (only once!)
         boolean analyticsEnabled = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("pref_sync", true);
         Log.d(TAG, "onCreate() analyticsEnabled = " + analyticsEnabled );
         if (analyticsEnabled) {

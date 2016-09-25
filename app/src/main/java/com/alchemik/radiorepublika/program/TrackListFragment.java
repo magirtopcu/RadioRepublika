@@ -28,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alchemik.radiorepublika.R;
+import com.alchemik.radiorepublika.mock.Playlist;
 import com.alchemik.radiorepublika.model.Track;
 import com.alchemik.radiorepublika.parser.ScheduleParser;
 import com.alchemik.radiorepublika.service.RadioService;
@@ -355,7 +356,7 @@ public class TrackListFragment extends Fragment {
             List<Track> trackList = new ArrayList<>();
             try {
                 trackList.addAll(ScheduleParser.parse());
-            } catch (ParseException | IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
             return trackList;
@@ -409,7 +410,7 @@ public class TrackListFragment extends Fragment {
     }
 
     @OnClick(R.id.schedule_sync_button)
-    private void synchronizeSchedule() {
+    public void synchronizeSchedule() {
         Log.d(TAG, "scheduleSyncBtn clicked");
         Animation rotateAnim = AnimationUtils.loadAnimation(getActivity(), R.anim.sync_button_rotation);
         scheduleSyncBtn.startAnimation(rotateAnim);
@@ -417,7 +418,7 @@ public class TrackListFragment extends Fragment {
     }
 
     @OnClick(R.id.player_close)
-    private void closeApplication() {
+    public void closeApplication() {
         onDestroy();
         //FIXME: find better solution
         getActivity().finish();
@@ -462,9 +463,9 @@ public class TrackListFragment extends Fragment {
         if (mEMAudioPlayer != null) {
             mEMAudioPlayer.stopProgressPoll();
             mEMAudioPlayer.reset();
+            playerPlayPauseBtn.setImageResource(R.drawable.ic_play_arrow_48dp);
             Log.i(TAG, "stopPlayer(): EMAudioPlayer was stopped");
         }
-        playerPlayPauseBtn.setImageResource(R.drawable.ic_play_arrow_48dp);
         shouldBePlaying = false;
     }
 
