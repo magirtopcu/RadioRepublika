@@ -23,5 +23,7 @@ dependencies:
 
 test:
     override:
+        - chmod +x gradlew
+        - ANDROID_HOME=/usr/local/android-sdk-linux ./gradlew dependencies
         - ./gradlew assemble
         - cp -r app/build/outputs $CIRCLE_ARTIFACTS
