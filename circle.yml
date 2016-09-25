@@ -25,5 +25,5 @@ dependencies:
 
 test:
     override:
-        - ./gradlew assemble
+        - ./gradlew assemble --stacktrace --info
         - cp -r app/build/outputs $CIRCLE_ARTIFACTS
